@@ -1,0 +1,11 @@
+.nav {
+    color: black;
+    padding-left: 80px;
+    padding-top: 18px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: bold;
+    height: 50pt;
+    font-size: 30pt;
+    background-color: white;
+    box-shadow: 0pt 0pt 10pt grey ;
+}
