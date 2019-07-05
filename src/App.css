@@ -1,31 +1,11 @@
-
-
 .formField{
-  width: 60%;
+  width: 70%;
   padding: 10px 12px;
   margin: 8px 0;
   display: block;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: content-box;
-}
-.aya{
-  width: 20%;
- 
-}
-
-
-
-.myList{
-  width: 200px;
-  height: 270px;
-  box-shadow: 0px 0px 10px #aaa;
-  border-radius: 10px;
-  float: left;
-  margin-left: 80px;
-  margin-top: 220px;
-  cursor: pointer;
-  outline: none;
 }
 
 .myListButton{

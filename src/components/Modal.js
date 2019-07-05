@@ -1,54 +1,58 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 import './Modal.css';
+import data from '../Data';
 
-class Modal1 extends Component {
+
+function text(text) {
+    if (text.length > 10) {
+        let textSplit = text.substr(0, 10)
+        return `${textSplit} ...`
+    } else {
+        let textSplit = text
+        return `${textSplit}`
+    }
+}
+
+class Action extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            modalIsOpen: false,
-            tittle: 'Add Books',
             act: 0,
             index: '',
-            datas: [],
-        };
+            datas: data
 
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    };
-
-    openModal() {
-        this.setState({ modalIsOpen: true });
-    };
+        }
+    }
 
     fSubmit = (e) => {
         e.preventDefault();
 
         let datas = this.state.datas;
-        let image = this.refs.image.value;
         let title = this.refs.title.value;
         let description = this.refs.description.value;
+        let image = this.refs.image.value;
 
         if (this.state.act === 0) {
             let data = {
-                image, title, description
+                title, description, image
             }
-            datas.push(data);
-        }else{                      //update
+            datas.unshift(data);
+        } else {
             let index = this.state.index;
             datas[index].title = title;
             datas[index].description = description;
-          }  
+            datas[index].image = image;
+        }
 
         this.setState({
             datas: datas,
-            act: 0,
-            modalIsOpen: false 
+            act: 0
         });
 
         this.refs.myForm.reset();
         this.refs.title.focus();
-    };
+    }
 
     fRemove = (i) => {
         let datas = this.state.datas;
@@ -57,124 +61,113 @@ class Modal1 extends Component {
             datas: datas
         });
 
-  
-    };
-
-    fEdit = (i) => {
-        let data = this.state.datas[i];
-        this.ref.image.value = data.image;
-        this.ref.title.value = data.title;
-        this.ref.description.value = data.description;
-        
-
-        this.setState({
-            modalIsOpen: true,
-            act: 1,
-        });
+        this.refs.myForm.reset();
         this.refs.title.focus();
     }
 
-    closeModal() {
-        this.setState({ modalIsOpen: false });
+    fEdit = (i) => {
+        let data = this.state.datas[i];
+        this.refs.title.value = data.title;
+        this.refs.description.value = data.description;
+        this.refs.image.value = data.image;
+
+        this.setState({
+            act: 1,
+            index: i
+        });
+
+        this.refs.title.focus();
     }
 
-
-
     render() {
+        let datas = this.state.datas;
         return (
             <div>
-                <p onClick={this.openModal} className='add'>ADD</p>
-                <div id="modal-window-one" >
+                <div className="container">
+                    <a href="/#add" className='add'>ADD</a>
 
-                    <Modal className="mod"
-                        isOpen={this.state.modalIsOpen}
-                        onRequestClose={this.closeModal}
-                    >
-                        <p className="close" onClick={this.closeModal}>X</p>
-                        <h2 className="title">{this.state.tittle}</h2>
+                    <div id="add" className="mod">
 
                         <div className="form-style-2">
-                            <form ref="myForm">
 
-                                <label for="field1">
+                            <a className="close" href="/#">X</a>
+                            <h2 className="title">Add Books</h2>
+
+                            <form ref="myForm" className="myForm">
+
+                                <label>
                                     <span>Image Url</span>
-                                    <input 
-                                        ref="image" 
-                                        placeholder="Image Url" 
-                                        type="text" 
-                                        className="input-field"
-                                        />
-                                        
+                                    <input
+                                        type="text"
+                                        ref="image"
+                                        placeholder="Image Url ..."
+                                        className="formField" />
                                 </label>
-                               
-                                <label for="field2">
-                                    <span>Tittle</span>
-                                    <input 
-                                        ref="title" 
-                                        placeholder="Title" 
-                                        type="text" 
-                                        className="input-field"
-                                        />
-                                </label>
-                                
-                                <label for="field5">
-                                    <span>Description</span>
-                                    <textarea 
-                                        ref="description" 
-                                        placeholder="Description" 
-                                        className="textarea-field"
-                                        >
-                                    </textarea>
-                                </label>
-                                <button type="submit" className="myButton" onClick={(e) => this.fSubmit(e)} >Save</button>
 
+                                <label>
+                                    <span>Title</span>
+                                    <input
+                                        type="text"
+                                        ref="title"
+                                        placeholder="Title..."
+                                        className="formField" />
+                                </label>
+
+                                <label>
+                                    <span>Description</span>
+                                    <textarea
+                                        type="text"
+                                        ref="description"
+                                        placeholder="Description..."
+                                        className="textarea-field" />
+                                </label>
+
+                                <a onClick={(e) => this.fSubmit(e)} className="myButton" type="submit">submit </a>
                             </form>
+
                         </div>
 
+                    </div>
 
-                    </Modal>
+                </div>
+
+                <div className="aaa">
+                    {datas.map((data, i) =>
+
+                        <a href={`#popup2/${i}`} className="item">
+
+                            <img src={data.image} alt="gambar" />
+                            <p className='item-p'>{text(data.title)}</p>
+
+                        </a>
+
+                    )}
                 </div>
 
                 <div>
-                    
-                        {this.state.datas.map((data, i) =>
-                        <div>
-                        <a  className="button" href={`#popup1/${i}`}>
-                            <div key={i} className="myList">
-                                <img className='img' src={data.image} alt="gambar" />
-                                <p className='myP'>{data.title}</p>
-                            
-                            </div>
-                            </a>
-                       
-                       
-                  
-                  
-                    <div key={i} id={`popup1/${i}`} className="overlay">
-                        
+                    {datas.map((data, i) =>
+                        <div key={i} id={`popup2/${i}`} className="overlay">
+
                             <div className="popup" >
                                 <img className='img2' src={data.image} alt="gambar" />
-                                <a className="edit1" onClick={() => this.fEdit(i)}>Edit</a>
-                                <a className="back" href="/#">Back</a>
-                                <a className="delete1" href="/#" onClick={() => this.fRemove(i)}>Delete
-                            </a>
                                 <img className='img1' src={data.image} alt="gambar" />
-                                <div>
-                                    <h1 className="titel">{data.title}</h1>
-                                    <p className="desc">{data.description}</p>
-                                </div>
 
+                                <a href="/#add" onClick={() => this.fEdit(i)} className="edit1">Edit </a>
+                                <a className="back" href="/#">Back</a>
+                                <a className="delete1" href="/#" onClick={() => this.fRemove(i)}>Delete</a>
+
+                                <h1 className="titel">{data.title}</h1>
+                                <p className="desc">{data.description}</p>
                             </div>
-                       
-                    </div>
-                    </div>
-                     )}
 
+                        </div>
+                    )}
 
                 </div>
+
             </div>
         );
     }
 }
 
-export default Modal1;
+export default Action;
